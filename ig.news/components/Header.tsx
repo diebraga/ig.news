@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import styles from '../styles/header.module.scss'
+import { ActiveLink } from './ActiveLink'
 
 export function Header() {
   return (
@@ -7,12 +7,13 @@ export function Header() {
       <div className={styles.headerContent}>
         <img src="logo.svg" alt="logo"/>
         <nav>
-          <Link href="/">
+          <ActiveLink href="/" activeClassName={styles.active}>
             <a>Home</a>
-          </Link>
-          <Link href="/posts">
+          </ActiveLink>
+
+          <ActiveLink href="/posts" activeClassName={styles.active}>
             <a>Posts</a>
-          </Link>
+          </ActiveLink>
         </nav>
       </div>
     </header>
