@@ -3,11 +3,22 @@ import styles from '../styles/home.module.scss'
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Head>
-        <title>ig.news</title>
+        <title>Home - ig.news</title>
       </Head>
-      First commit
-    </div>
+      <main className={styles.contentContainer}>
+        <section className={styles.hero}>
+          <span>👋 Hello, Welcome</span>
+          <h1>News about the <span>React</span> World.</h1>
+          <p>
+            Get access to the publications <br />
+            <span>for $0.99 month.</span>
+          </p>
+        </section>
+
+        <img src="avatar.svg" alt="coder girl"/>
+      </main>
+    </>
   )
 }
