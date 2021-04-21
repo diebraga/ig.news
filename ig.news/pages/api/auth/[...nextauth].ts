@@ -1,5 +1,8 @@
+import { query as q } from 'faunadb'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
+
+import { fauna } from '../../../services/fauna'
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -11,4 +14,26 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  jwt: {
+    signingKey: process.env.SIGNIN_KEY
+  },
+  callbacks: {
+    async signIn(user, account, profile) {
+      const { email, name } = user
+      
+      try {
+        await fauna.query(
+          q.Create(
+            q.Collection('users'),
+            { data: { email, name } }
+          )
+        )
+  
+        return true  
+  
+      } catch (error) {
+        return false  
+      }
+    }
+  },
 })
