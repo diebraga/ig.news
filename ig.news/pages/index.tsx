@@ -6,7 +6,7 @@ import { stripe } from '../services/stripe'
 
 interface ProductProps {
   product: {
-    productId: string
+    priceId: string
     amount: number
   }
 }
@@ -25,7 +25,7 @@ export default function Home({ product }: ProductProps) {
             Get access to the publications <br />
             <span>for ${product.amount} only.</span>
           </p>
-          <SubscribeButton />
+          <SubscribeButton priceId={product.priceId} />
         </section>
 
         <img src="avatar.svg" alt="coder girl"/>

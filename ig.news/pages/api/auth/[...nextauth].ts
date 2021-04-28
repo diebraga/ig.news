@@ -7,16 +7,15 @@ import { fauna } from '../../../services/fauna'
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
-    Providers.GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-      scope: 'read:user'
+    Providers.Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
     }),
     // ...add more providers here
   ],
   callbacks: {
     async signIn(user, account, profile) {
-      const { name } = user
+      const { email } = user
       
       try {
         await fauna.query(
@@ -24,19 +23,19 @@ export default NextAuth({
             q.Not(
               q.Exists(
                 q.Match(
-                  q.Index('user_by_name'),
-                  q.Casefold(user.name)
+                  q.Index('user_by_email'),
+                  q.Casefold(user.email)
                 )
               )
             ),
             q.Create(
               q.Collection('users'),
-              { data: { name } }
+              { data: { email } }
             ),
             q.Get(
               q.Match(
-                q.Index('user_by_name'),
-                q.Casefold(user.name)
+                q.Index('user_by_email'),
+                q.Casefold(user.email)
               )
             ),
           )
@@ -44,7 +43,7 @@ export default NextAuth({
 
         return true;
       } catch {
-        return true;
+        return false;
       }
     },
   }
