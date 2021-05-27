@@ -1,10 +1,21 @@
-import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { getPrismicClient } from '../../services/prismic'
 import styles from '../../styles/styles.pages/posts.module.scss'
 import Prismic from '@prismicio/client'
+import { RichText } from 'prismic-dom'
 
-export default function Posts() {
+type Post = {
+  slug: string
+  excerpt: string
+  title: string
+  updatedAt: string
+}
+
+interface PostsProps {
+  posts: Post[]
+}
+
+export default function Posts({ posts }: PostsProps) {
   return (
     <>
     <Head>
@@ -13,20 +24,17 @@ export default function Posts() {
 
     <main className={styles.container}>
       <div className={styles.posts}>
-        <a>
-          <time>February 2 2023</time>
-          <strong>Yarn dev starting your app</strong>
-          <p>
-          If you are used to using npm you might be expecting to use --save or --save-dev . These have been replaced by yarn add and yarn add --dev . For more information ...
-          </p>
-        </a>
-        <a>
-          <time>February 2 2023</time>
-          <strong>Yarn dev starting your app</strong>
-          <p>
-          If you are used to using npm you might be expecting to use --save or --save-dev . These have been replaced by yarn add and yarn add --dev . For more information ...
-          </p>
-        </a>
+        {posts.map(item => {
+          return (
+            <a href='#' key={item.slug}>
+              <time>{item.updatedAt}</time>
+              <strong>{item.title}</strong>
+              <p>
+                {item.excerpt}
+              </p>
+            </a>  
+          )
+        })}
       </div>
     </main>
     </>
@@ -43,9 +51,23 @@ export const getStaticProps = async () => {
     pageSize: 100,
   })
 
-  console.log(response)
+  const posts = response.results.map(post => {
+    return {
+      slug: post.uid,
+      title: RichText.asText(post.data.title),
+      excerpt: post.data.content
+        .find(content => content.type === 'paragraph')?.text ?? '',
+      updatedAt: new Date(post.last_publication_date).toLocaleDateString('en-US', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      })
+    }
+  });
 
   return {
-    props: {}
+    props: {
+      posts: posts
+    }
   }
 }
