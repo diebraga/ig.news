@@ -7,7 +7,7 @@ import { RichText } from "prismic-dom";
 import { useEffect } from "react";
 import { getPrismicClient } from "../../../services/prismic";
 
-import styles from '../post.module.scss';
+import styles from '../../../styles/styles.pages/post.module.scss';
 
 interface PostPreviewProps {
   post: {
