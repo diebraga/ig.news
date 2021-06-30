@@ -14,6 +14,9 @@ export default NextAuth({
     // ...add more providers here
   ],
   callbacks: {
+    /*
+ // @ts-ignore */
+
     async session(session: Session) {
       try {
         const userActiveSubscription = await fauna.query(
