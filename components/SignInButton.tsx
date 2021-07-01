@@ -1,5 +1,5 @@
 import styles from '../styles/signinbutton.module.scss'
-import { FcGoogle } from 'react-icons/fc'
+import { GrGithub } from 'react-icons/gr'
 import { FiX } from 'react-icons/fi'
 import { signIn, useSession, signOut } from 'next-auth/client'
 
@@ -12,7 +12,7 @@ export function SignInButton() {
       className={styles.signInButton}
       onClick={() => signOut()}
     >
-      <FcGoogle />
+      <GrGithub />
       {session.user.name} 
       <FiX color='#737380' className={styles.closeIcon}/>
     </button>
@@ -20,10 +20,10 @@ export function SignInButton() {
     <button 
       type="button"   
       className={styles.signInButton}
-      onClick={() => {signIn('google')}}
+      onClick={() => {signIn('github')}}
     >
-      <FcGoogle />
-      Sign in with Google
+      <GrGithub />
+      Sign in with Github 
     </button>
   )
 }
